@@ -1,8 +1,7 @@
-package vip.mae.uploadanddownload;
+package vip.mae.uploadanddownload.ui;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +22,11 @@ import com.lzy.okgo.model.Response;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import vip.mae.uploadanddownload.Apis;
+import vip.mae.uploadanddownload.entity.FileList;
+import vip.mae.uploadanddownload.R;
+import vip.mae.uploadanddownload.utils.HttpDownloader;
 
 public class FileListActivity extends AppCompatActivity {
 
@@ -72,8 +76,33 @@ public class FileListActivity extends AppCompatActivity {
             holder.tv_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "run: "+Apis.DownLoad + data.get(position).getFile_name());
+                            final int i = HttpDownloader.downloadFiles(Apis.DownLoad + data.get(position).getFile_name(), "1212", data.get(position).getFile_name());
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    switch (i) {
+                                        case -1:
+                                            Toast.makeText(FileListActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 0:
+                                            Toast.makeText(FileListActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 1:
+                                            Toast.makeText(FileListActivity.this, "文件已存在", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            });
 
-                    downLoad(data.get(position).getFile_url(), "1212");
+                            //-1：下载失败，0：下载成功，1：文件已存在
+
+                        }
+                    }).start();
+
 
                 }
             });
@@ -87,8 +116,8 @@ public class FileListActivity extends AppCompatActivity {
         /**
          * 下载文件
          *
-         * @param url          下载地址
-         * @param destFileDir  保存文件路径
+         * @param url         下载地址
+         * @param destFileDir 保存文件路径
          */
         private void downLoad(String url, String destFileDir) {
             OkGo.<File>get("https://testin-ee.oss-cn-hangzhou.aliyuncs.com/log--1-d83cafe707c346adbc7522fcfabc7b59.log")//
@@ -104,7 +133,7 @@ public class FileListActivity extends AppCompatActivity {
                         @Override
                         public void downloadProgress(Progress progress) {
                             super.downloadProgress(progress);
-                            Log.d(TAG, "downloadProgress: "+progress.currentSize +"/"+ progress.totalSize);
+                            Log.d(TAG, "downloadProgress: " + progress.currentSize + "/" + progress.totalSize);
                         }
 
 

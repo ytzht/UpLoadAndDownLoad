@@ -1,4 +1,4 @@
-package vip.mae.uploadanddownload;
+package vip.mae.uploadanddownload.entity;
 
 import java.util.List;
 

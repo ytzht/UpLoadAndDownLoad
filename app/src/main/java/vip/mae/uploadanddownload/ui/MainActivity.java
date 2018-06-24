@@ -1,4 +1,4 @@
-package vip.mae.uploadanddownload;
+package vip.mae.uploadanddownload.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,9 @@ import com.lzy.okgo.model.Response;
 import java.io.File;
 
 import cn.qqtheme.framework.picker.FilePicker;
+import vip.mae.uploadanddownload.Apis;
+import vip.mae.uploadanddownload.R;
+import vip.mae.uploadanddownload.entity.ResultData;
 
 public class MainActivity extends AppCompatActivity {
 

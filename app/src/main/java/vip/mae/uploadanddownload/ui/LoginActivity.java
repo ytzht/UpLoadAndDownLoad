@@ -1,4 +1,4 @@
-package vip.mae.uploadanddownload;
+package vip.mae.uploadanddownload.ui;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import vip.mae.uploadanddownload.R;
 
 public class LoginActivity extends AppCompatActivity {
 
